@@ -30,13 +30,24 @@ public class CommentServlet extends HttpServlet {
             return;
         }
         int postId;
-        try { postId = Integer.parseInt(postIdStr); } catch (NumberFormatException e) { resp.sendRedirect(req.getContextPath() + "/home"); return; }
+        try {
+            postId = Integer.parseInt(postIdStr);
+        } catch (NumberFormatException e) {
+            resp.sendRedirect(req.getContextPath() + "/home");
+            return;
+        }
         Integer parentId = null;
-        if (parentStr != null && !parentStr.isEmpty()) try { parentId = Integer.parseInt(parentStr); } catch (NumberFormatException e) {}
+        if (parentStr != null && !parentStr.isEmpty()) try {
+            parentId = Integer.parseInt(parentStr);
+        } catch (NumberFormatException e) {
+        }
         CommentDAO commentDAO = new CommentDAO();
         commentDAO.insert(me.getId(), postId, content.trim(), parentId);
         String ref = req.getHeader("Referer");
-        if (ref != null && !ref.isEmpty()) resp.sendRedirect(ref);
-        else resp.sendRedirect(req.getContextPath() + "/home");
+        if (ref != null && !ref.isEmpty()) {
+            resp.sendRedirect(ref);
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/home");
+        }
     }
 }

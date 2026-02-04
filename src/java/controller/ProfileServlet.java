@@ -29,7 +29,10 @@ public class ProfileServlet extends HttpServlet {
         String idStr = req.getParameter("id");
         int profileUserId = me.getId();
         if (idStr != null && !idStr.isEmpty()) {
-            try { profileUserId = Integer.parseInt(idStr); } catch (NumberFormatException e) {}
+            try {
+                profileUserId = Integer.parseInt(idStr);
+            } catch (NumberFormatException e) {
+            }
         }
         UserDAO userDAO = new UserDAO();
         User profileUser = userDAO.getById(profileUserId);
@@ -44,7 +47,10 @@ public class ProfileServlet extends HttpServlet {
         PostDAO postDAO = new PostDAO();
         int page = 1;
         String p = req.getParameter("page");
-        if (p != null && !p.isEmpty()) try { page = Integer.parseInt(p); } catch (NumberFormatException e) {}
+        if (p != null && !p.isEmpty()) try {
+            page = Integer.parseInt(p);
+        } catch (NumberFormatException e) {
+        }
         List<Post> posts = postDAO.getByUserId(profileUserId, 20, (page - 1) * 20);
         List<Integer> postIds = posts.stream().map(Post::getId).collect(Collectors.toList());
         PostLikeDAO likeDAO = new PostLikeDAO();

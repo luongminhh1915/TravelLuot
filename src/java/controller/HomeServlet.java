@@ -32,7 +32,10 @@ public class HomeServlet extends HttpServlet {
         PostDAO postDAO = new PostDAO();
         int page = 1;
         String p = req.getParameter("page");
-        if (p != null && !p.isEmpty()) try { page = Integer.parseInt(p); } catch (NumberFormatException e) {}
+        if (p != null && !p.isEmpty()) try {
+            page = Integer.parseInt(p);
+        } catch (NumberFormatException e) {
+        }
         int limit = 10;
         int offset = (page - 1) * limit;
         List<Post> posts = postDAO.getFeed(me.getId(), followingIds, limit, offset);

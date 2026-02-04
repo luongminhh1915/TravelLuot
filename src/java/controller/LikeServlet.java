@@ -28,12 +28,23 @@ public class LikeServlet extends HttpServlet {
             return;
         }
         int postId;
-        try { postId = Integer.parseInt(postIdStr); } catch (NumberFormatException e) { resp.sendRedirect(req.getContextPath() + "/home"); return; }
+        try {
+            postId = Integer.parseInt(postIdStr);
+        } catch (NumberFormatException e) {
+            resp.sendRedirect(req.getContextPath() + "/home");
+            return;
+        }
         PostLikeDAO likeDAO = new PostLikeDAO();
-        if (likeDAO.isLiked(me.getId(), postId)) likeDAO.unlike(me.getId(), postId);
-        else likeDAO.like(me.getId(), postId);
+        if (likeDAO.isLiked(me.getId(), postId)) {
+            likeDAO.unlike(me.getId(), postId);
+        } else {
+            likeDAO.like(me.getId(), postId);
+        }
         String ref = req.getHeader("Referer");
-        if (ref != null && !ref.isEmpty()) resp.sendRedirect(ref);
-        else resp.sendRedirect(req.getContextPath() + "/home");
+        if (ref != null && !ref.isEmpty()) {
+            resp.sendRedirect(ref);
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/home");
+        }
     }
 }

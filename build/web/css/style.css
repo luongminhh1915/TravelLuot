@@ -1,47 +1,514 @@
+/* TravelLuot - Giao diện gần giống Facebook, dùng Bootstrap */
 :root {
-    --primary: #0d6efd;
-    --bg: #f0f2f5;
-    --card-bg: #fff;
-    --text: #1c1e21;
-    --border: #dddfe2;
+    --fb-blue: #1877f2;
+    --fb-blue-hover: #166fe5;
+    --fb-green: #42b72a;
+    --fb-bg: #f0f2f5;
+    --fb-white: #fff;
+    --fb-text: #050505;
+    --fb-text-secondary: #65676b;
+    --fb-divider: #ced0d4;
+    --fb-card-shadow: 0 1px 2px rgba(0,0,0,.2);
+    --fb-radius: 8px;
+    --fb-radius-lg: 12px;
+    --fb-radius-xl: 20px;
 }
+
 * { box-sizing: border-box; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; min-height: 100vh; }
-.auth-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.auth-card { max-width: 400px; width: 100%; border-radius: 12px; border: none; }
-.navbar-brand { font-weight: 700; }
-.navbar { box-shadow: 0 1px 2px rgba(0,0,0,.05); }
-.main-container { max-width: 680px; margin: 0 auto; padding: 1rem 0; }
-.post-card { border: none; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.08); margin-bottom: 1rem; overflow: hidden; }
-.post-card .card-body { padding: 1rem; }
-.post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 0.75rem; }
-.post-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #e4e6eb; }
-.post-meta { flex: 1; }
-.post-meta .fw-bold { font-size: 0.95rem; }
-.post-meta .text-muted { font-size: 0.8rem; }
-.post-content { white-space: pre-wrap; word-break: break-word; margin-bottom: 0.5rem; }
-.post-checkin { font-size: 0.85rem; color: #65676b; margin-bottom: 0.5rem; }
-.post-checkin span { color: #0d6efd; }
-.post-photos { margin: 0.5rem 0; border-radius: 8px; overflow: hidden; }
-.post-photos img { width: 100%; max-height: 400px; object-fit: cover; display: block; }
-.post-actions { display: flex; gap: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
-.post-actions button, .post-actions a { background: none; border: none; color: #65676b; padding: 0.25rem 0; font-size: 0.9rem; text-decoration: none; cursor: pointer; }
-.post-actions button:hover, .post-actions a:hover { color: var(--primary); }
-.post-actions .liked { color: #f33; }
-.comment-list { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
-.comment-item { display: flex; gap: 8px; margin-bottom: 0.5rem; font-size: 0.9rem; }
-.comment-item .comment-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-.comment-item .comment-body { flex: 1; }
-.comment-item .comment-author { font-weight: 600; margin-right: 6px; }
-.comment-form { display: flex; gap: 8px; margin-top: 0.5rem; }
-.comment-form input { flex: 1; border-radius: 20px; padding: 0.4rem 1rem; border: 1px solid var(--border); }
-.create-post-card { border: none; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.08); margin-bottom: 1rem; padding: 1rem; }
-.create-post-card textarea { border-radius: 10px; resize: none; min-height: 80px; }
-.create-post-card .form-select { border-radius: 8px; }
-.create-post-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; align-items: center; }
-.profile-cover { height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0; }
-.profile-avatar-wrap { margin-top: -60px; padding-left: 1.5rem; margin-bottom: 1rem; }
-.profile-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
-.profile-card { border: none; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.08); overflow: hidden; }
-.btn-follow { border-radius: 20px; padding: 0.35rem 1.25rem; }
-.img-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+body {
+    background: var(--fb-bg);
+    color: var(--fb-text);
+    font-family: Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 56px; /* navbar fixed height */
+}
+
+/* ========== Navbar giống Facebook ========== */
+.fb-navbar {
+    background: var(--fb-blue) !important;
+    height: 56px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+.fb-navbar .navbar-brand {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+.fb-navbar .nav-link {
+    color: rgba(255,255,255,.9) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--fb-radius);
+    font-weight: 500;
+}
+.fb-navbar .nav-link:hover {
+    background: rgba(255,255,255,.1);
+    color: #fff !important;
+}
+.fb-navbar .nav-link.active {
+    color: #fff !important;
+}
+.fb-navbar .form-control {
+    background: rgba(255,255,255,.2);
+    border: none;
+    color: #fff;
+    border-radius: 50px;
+    max-width: 240px;
+    padding: 0.4rem 1rem;
+}
+.fb-navbar .form-control::placeholder {
+    color: rgba(255,255,255,.8);
+}
+.fb-navbar .dropdown-toggle {
+    color: #fff !important;
+    background: none !important;
+    border: none !important;
+    padding: 0.25rem 0.5rem;
+}
+.fb-navbar .dropdown-menu {
+    border-radius: var(--fb-radius-lg);
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    margin-top: 0.5rem;
+}
+.fb-navbar .user-avatar-nav {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ========== Layout 3 cột (trái - giữa - phải) ========== */
+.fb-layout {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    gap: 1rem;
+}
+.fb-sidebar-left {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 72px;
+    height: fit-content;
+}
+.fb-feed {
+    flex: 1;
+    min-width: 0;
+    max-width: 680px;
+    margin: 0 auto;
+}
+.fb-sidebar-right {
+    width: 300px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 72px;
+    height: fit-content;
+}
+
+/* Shortcut menu trái */
+.fb-shortcuts {
+    background: var(--fb-white);
+    border-radius: var(--fb-radius-lg);
+    box-shadow: var(--fb-card-shadow);
+    overflow: hidden;
+}
+.fb-shortcuts .shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.6rem 1rem;
+    color: var(--fb-text);
+    text-decoration: none;
+    border-radius: var(--fb-radius);
+    margin: 0 8px;
+    margin-bottom: 2px;
+}
+.fb-shortcuts .shortcut-item:hover {
+    background: var(--fb-bg);
+}
+.fb-shortcuts .shortcut-item img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.fb-shortcuts .shortcut-item span {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* ========== Ô tạo bài viết (Create post) ========== */
+.fb-create-post {
+    background: var(--fb-white);
+    border-radius: var(--fb-radius-lg);
+    box-shadow: var(--fb-card-shadow);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.fb-create-post .create-post-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+.fb-create-post .create-post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.fb-create-post textarea.form-control {
+    border-radius: var(--fb-radius-xl);
+    background: var(--fb-bg);
+    border: none;
+    resize: none;
+    min-height: 40px;
+    padding: 0.6rem 1rem;
+    font-size: 1.05rem;
+}
+.fb-create-post textarea.form-control::placeholder {
+    color: var(--fb-text-secondary);
+}
+.fb-create-post .create-post-options {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--fb-divider);
+}
+.fb-create-post .create-post-options .btn {
+    border-radius: var(--fb-radius);
+    font-weight: 500;
+}
+.fb-create-post .btn-primary {
+    background: var(--fb-blue);
+    border-color: var(--fb-blue);
+}
+.fb-create-post .btn-primary:hover {
+    background: var(--fb-blue-hover);
+    border-color: var(--fb-blue-hover);
+}
+.fb-create-post .location-row {
+    margin-top: 0.5rem;
+}
+.fb-create-post .location-row .form-control,
+.fb-create-post .location-row .form-select {
+    border-radius: var(--fb-radius);
+    background: var(--fb-bg);
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* ========== Thẻ bài viết (Post card) ========== */
+.fb-post-card {
+    background: var(--fb-white);
+    border-radius: var(--fb-radius-lg);
+    box-shadow: var(--fb-card-shadow);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+.fb-post-card .post-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+}
+.fb-post-card .post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.fb-post-card .post-meta {
+    flex: 1;
+    min-width: 0;
+}
+.fb-post-card .post-meta .post-author-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--fb-text);
+    text-decoration: none;
+}
+.fb-post-card .post-meta .post-author-name:hover {
+    text-decoration: underline;
+}
+.fb-post-card .post-meta .post-checkin {
+    font-size: 0.85rem;
+    color: var(--fb-text-secondary);
+}
+.fb-post-card .post-meta .post-checkin .location-name {
+    color: var(--fb-blue);
+}
+.fb-post-card .post-meta .post-time {
+    font-size: 0.8rem;
+    color: var(--fb-text-secondary);
+}
+.fb-post-card .post-content {
+    padding: 0 16px 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.fb-post-card .post-photos {
+    margin: 0;
+    line-height: 0;
+}
+.fb-post-card .post-photos img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+}
+/* Thanh Like, Comment giống Facebook */
+.fb-post-card .post-stats {
+    padding: 0 16px;
+    min-height: 24px;
+    font-size: 0.9rem;
+    color: var(--fb-text-secondary);
+    border-top: 1px solid var(--fb-divider);
+}
+.fb-post-card .post-actions {
+    display: flex;
+    border-top: 1px solid var(--fb-divider);
+}
+.fb-post-card .post-actions form,
+.fb-post-card .post-actions .post-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--fb-text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.fb-post-card .post-actions form:hover,
+.fb-post-card .post-actions .post-action-btn:hover {
+    background: var(--fb-bg);
+    color: var(--fb-text-secondary);
+}
+.fb-post-card .post-actions .post-action-btn.liked,
+.fb-post-card .post-actions form:hover .liked-text {
+    color: var(--fb-blue);
+}
+.fb-post-card .post-actions .post-action-btn .icon {
+    font-size: 1.1rem;
+}
+/* Khu vực comment */
+.fb-post-card .comment-section {
+    padding: 8px 16px 12px;
+    border-top: 1px solid var(--fb-divider);
+    background: var(--fb-bg);
+}
+.fb-post-card .comment-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+.fb-post-card .comment-item .comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.fb-post-card .comment-item .comment-body {
+    flex: 1;
+    background: var(--fb-white);
+    padding: 8px 12px;
+    border-radius: var(--fb-radius-xl);
+}
+.fb-post-card .comment-item .comment-author {
+    font-weight: 600;
+    color: var(--fb-text);
+    text-decoration: none;
+    margin-right: 4px;
+}
+.fb-post-card .comment-item .comment-author:hover {
+    text-decoration: underline;
+}
+.fb-post-card .comment-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+}
+.fb-post-card .comment-form .comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.fb-post-card .comment-form input {
+    flex: 1;
+    border-radius: var(--fb-radius-xl);
+    border: none;
+    background: var(--fb-white);
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+.fb-post-card .comment-form .btn {
+    border-radius: var(--fb-radius);
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+}
+
+/* ========== Trang đăng nhập / đăng ký kiểu Facebook ========== */
+.fb-auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--fb-bg);
+    padding: 1rem;
+}
+.fb-auth-card {
+    max-width: 440px;
+    width: 100%;
+    background: var(--fb-white);
+    border-radius: var(--fb-radius-lg);
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    overflow: hidden;
+}
+.fb-auth-card .auth-header {
+    background: var(--fb-blue);
+    color: #fff;
+    padding: 1.5rem;
+    text-align: center;
+}
+.fb-auth-card .auth-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+.fb-auth-card .auth-header p {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 0.95rem;
+}
+.fb-auth-card .card-body {
+    padding: 1.5rem;
+}
+.fb-auth-card .form-control {
+    border-radius: var(--fb-radius);
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--fb-divider);
+}
+.fb-auth-card .btn-primary {
+    background: var(--fb-blue);
+    border-color: var(--fb-blue);
+    border-radius: var(--fb-radius);
+    font-weight: 600;
+    padding: 0.5rem;
+}
+.fb-auth-card .btn-primary:hover {
+    background: var(--fb-blue-hover);
+    border-color: var(--fb-blue-hover);
+}
+.fb-auth-card .auth-footer {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--fb-divider);
+}
+.fb-auth-card .auth-footer a {
+    color: var(--fb-blue);
+    font-weight: 600;
+    text-decoration: none;
+}
+.fb-auth-card .auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ========== Trang cá nhân (Profile) ========== */
+.fb-profile-cover {
+    height: 350px;
+    background: linear-gradient(135deg, var(--fb-blue) 0%, #0d47a1 100%);
+    border-radius: var(--fb-radius-lg) var(--fb-radius-lg) 0 0;
+    position: relative;
+}
+.fb-profile-avatar-wrap {
+    position: relative;
+    padding: 0 1.5rem;
+    margin-top: -80px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.fb-profile-avatar {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: 4px solid var(--fb-white);
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.fb-profile-info {
+    padding: 0 1.5rem 1rem;
+}
+.fb-profile-info h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+.fb-profile-info .username {
+    color: var(--fb-text-secondary);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+.fb-profile-info .bio {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+.fb-profile-stats {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--fb-text-secondary);
+    font-size: 0.95rem;
+}
+.fb-profile-stats strong {
+    color: var(--fb-text);
+}
+.fb-profile-card {
+    background: var(--fb-white);
+    border-radius: var(--fb-radius-lg);
+    box-shadow: var(--fb-card-shadow);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+.fb-btn-follow {
+    border-radius: var(--fb-radius-xl);
+    font-weight: 600;
+    padding: 0.4rem 1.25rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .fb-sidebar-left, .fb-sidebar-right { display: none; }
+    .fb-layout { justify-content: center; }
+    body { padding-top: 56px; }
+}
+@media (max-width: 768px) {
+    .fb-navbar .form-control { display: none; }
+    .fb-create-post .location-row .row > div { margin-bottom: 0.5rem; }
+}

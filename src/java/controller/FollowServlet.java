@@ -28,12 +28,23 @@ public class FollowServlet extends HttpServlet {
             return;
         }
         int targetId;
-        try { targetId = Integer.parseInt(userIdStr); } catch (NumberFormatException e) { resp.sendRedirect(req.getContextPath() + "/home"); return; }
+        try {
+            targetId = Integer.parseInt(userIdStr);
+        } catch (NumberFormatException e) {
+            resp.sendRedirect(req.getContextPath() + "/home");
+            return;
+        }
         FollowDAO followDAO = new FollowDAO();
-        if (followDAO.isFollowing(me.getId(), targetId)) followDAO.unfollow(me.getId(), targetId);
-        else followDAO.follow(me.getId(), targetId);
+        if (followDAO.isFollowing(me.getId(), targetId)) {
+            followDAO.unfollow(me.getId(), targetId);
+        } else {
+            followDAO.follow(me.getId(), targetId);
+        }
         String ref = req.getHeader("Referer");
-        if (ref != null && !ref.isEmpty()) resp.sendRedirect(ref);
-        else resp.sendRedirect(req.getContextPath() + "/home");
+        if (ref != null && !ref.isEmpty()) {
+            resp.sendRedirect(ref);
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/home");
+        }
     }
 }

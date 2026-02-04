@@ -86,9 +86,9 @@ body {
 /* ========== Layout 3 cột (trái - giữa - phải) ========== */
 .fb-layout {
     display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
+    max-width: none; /* layout mặc định cho news feed */
+    margin: 0;
+    padding: 0; 
     gap: 1rem;
 }
 .fb-sidebar-left {
@@ -101,8 +101,8 @@ body {
 .fb-feed {
     flex: 1;
     min-width: 0;
-    max-width: 680px;
-    margin: 0 auto;
+    max-width: none; /* không giới hạn chiều rộng cột giữa */
+    margin: 0; /* sát layout hơn */
 }
 .fb-sidebar-right {
     width: 300px;
@@ -110,6 +110,26 @@ body {
     position: sticky;
     top: 72px;
     height: fit-content;
+}
+
+/* Trang profile: ẩn sidebar để card sát lề hơn */
+.profile-page .fb-sidebar-left,
+.profile-page .fb-sidebar-right {
+    display: none !important;
+}
+.profile-page .fb-layout {
+    max-width: 1300px;      /* giới hạn giống Facebook profile */
+    margin: 0 auto;         /* căn giữa khối profile */
+    padding: 0 16px;        /* chừa viền hai bên như Facebook */
+}
+.profile-page .fb-feed {
+    max-width: 1160px;      /* chiều rộng cột profile */
+    margin: 0 auto;
+}
+.profile-page .fb-profile-card {
+    max-width: 1160px;      /* cover + info bằng cột profile */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Shortcut menu trái */
@@ -439,15 +459,30 @@ body {
 
 /* ========== Trang cá nhân (Profile) ========== */
 .fb-profile-cover {
-    height: 350px;
+    height: 360px; /* chiều cao cover desktop gần giống Facebook */
     background: linear-gradient(135deg, var(--fb-blue) 0%, #0d47a1 100%);
     border-radius: var(--fb-radius-lg) var(--fb-radius-lg) 0 0;
     position: relative;
+    overflow: hidden;
+}
+.fb-profile-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.fb-btn-cover-edit {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    border-radius: var(--fb-radius-xl);
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
 .fb-profile-avatar-wrap {
     position: relative;
     padding: 0 1.5rem;
-    margin-top: -80px;
+    margin-top: -120px; /* avatar lấn sâu hơn xuống phần trắng giống Facebook */
     margin-bottom: 1rem;
     display: flex;
     align-items: flex-end;
@@ -456,12 +491,25 @@ body {
     gap: 1rem;
 }
 .fb-profile-avatar {
-    width: 168px;
-    height: 168px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     border: 4px solid var(--fb-white);
     object-fit: cover;
     box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.fb-btn-avatar-edit {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.3);
 }
 .fb-profile-info {
     padding: 0 1.5rem 1rem;
@@ -489,12 +537,23 @@ body {
 .fb-profile-stats strong {
     color: var(--fb-text);
 }
+.fb-profile-stat-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.fb-profile-stat-link:hover {
+    text-decoration: underline;
+}
 .fb-profile-card {
     background: var(--fb-white);
     border-radius: var(--fb-radius-lg);
     box-shadow: var(--fb-card-shadow);
     overflow: hidden;
     margin-bottom: 1rem;
+    max-width: none; /* cho phép khối profile rộng hết cột giữa */
+    margin-left: 0;
+    margin-right: 0;
 }
 .fb-btn-follow {
     border-radius: var(--fb-radius-xl);
@@ -502,11 +561,32 @@ body {
     padding: 0.4rem 1.25rem;
 }
 
+.fb-follow-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.4rem 0.25rem;
+    text-decoration: none;
+    color: var(--fb-text);
+}
+.fb-follow-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.fb-follow-item:hover {
+    background: var(--fb-bg);
+}
+
 /* Responsive */
 @media (max-width: 992px) {
     .fb-sidebar-left, .fb-sidebar-right { display: none; }
-    .fb-layout { justify-content: center; }
+    .fb-layout { justify-content: center; padding: 0.5rem; }
     body { padding-top: 56px; }
+    .fb-profile-cover { height: 260px; } /* cover thấp hơn trên tablet/mobile */
+    .fb-profile-avatar-wrap { margin-top: -72px; }
+    .fb-profile-avatar { width: 136px; height: 136px; }
 }
 @media (max-width: 768px) {
     .fb-navbar .form-control { display: none; }

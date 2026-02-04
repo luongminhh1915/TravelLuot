@@ -45,6 +45,17 @@ public class FollowDAO extends DBConnect {
         return list;
     }
 
+    public List<Integer> getFollowerIds(int userId) {
+        List<Integer> list = new ArrayList<>();
+        String sql = "SELECT follower_id FROM follows WHERE following_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(rs.getInt("follower_id"));
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
+
     public int countFollowers(int userId) {
         String sql = "SELECT COUNT(*) FROM follows WHERE following_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

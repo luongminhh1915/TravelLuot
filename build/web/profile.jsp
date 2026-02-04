@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body>
+<body class="profile-page">
     <%-- Navbar giống Facebook --%>
     <nav class="navbar navbar-expand-lg fb-navbar">
         <div class="container-fluid px-3">
@@ -42,9 +42,25 @@
         <main class="fb-feed">
             <%-- Cover + Avatar + Thông tin --%>
             <div class="fb-profile-card">
-                <div class="fb-profile-cover"></div>
+                <div class="fb-profile-cover">
+                    <c:if test="${not empty profileUser.coverUrl}">
+                        <img src="${profileUser.coverUrl}" alt="Ảnh bìa" class="fb-profile-cover-img">
+                    </c:if>
+                    <c:if test="${profileUser.id == me.id}">
+                        <button type="button" class="btn btn-light btn-sm fb-btn-cover-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="bi bi-camera-fill me-1"></i> Chỉnh sửa ảnh bìa
+                        </button>
+                    </c:if>
+                </div>
                 <div class="fb-profile-avatar-wrap">
-                    <img src="${not empty profileUser.avatarUrl ? profileUser.avatarUrl : 'https://ui-avatars.com/api/?name='}${empty profileUser.avatarUrl ? profileUser.username : ''}" alt="" class="fb-profile-avatar">
+                    <div class="position-relative">
+                        <img src="${not empty profileUser.avatarUrl ? profileUser.avatarUrl : 'https://ui-avatars.com/api/?name='}${empty profileUser.avatarUrl ? profileUser.username : ''}" alt="" class="fb-profile-avatar">
+                        <c:if test="${profileUser.id == me.id}">
+                            <button type="button" class="btn btn-light btn-sm fb-btn-avatar-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                <i class="bi bi-camera-fill"></i>
+                            </button>
+                        </c:if>
+                    </div>
                     <c:if test="${profileUser.id != me.id}">
                         <form action="${pageContext.request.contextPath}/follow" method="post">
                             <input type="hidden" name="userId" value="${profileUser.id}">
@@ -52,6 +68,11 @@
                                 <i class="bi bi-person-plus me-1"></i>${isFollowing ? 'Đang theo dõi' : 'Thêm bạn bè'}
                             </button>
                         </form>
+                    </c:if>
+                    <c:if test="${profileUser.id == me.id}">
+                        <button type="button" class="btn btn-primary fb-btn-follow" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa trang cá nhân
+                        </button>
                     </c:if>
                 </div>
                 <div class="fb-profile-info">
@@ -61,8 +82,12 @@
                         <p class="bio">${profileUser.bio}</p>
                     </c:if>
                     <div class="fb-profile-stats">
-                        <span><strong>${followers}</strong> người theo dõi</span>
-                        <span><strong>${following}</strong> đang theo dõi</span>
+                        <a href="#" class="fb-profile-stat-link" data-bs-toggle="modal" data-bs-target="#followersModal">
+                            <strong>${followers}</strong> người theo dõi
+                        </a>
+                        <a href="#" class="fb-profile-stat-link" data-bs-toggle="modal" data-bs-target="#followingModal">
+                            <strong>${following}</strong> đang theo dõi
+                        </a>
                     </div>
                 </div>
             </div>
@@ -148,6 +173,100 @@
                     <p class="mt-2 mb-0">Chưa có bài viết nào.</p>
                 </div>
             </c:if>
+
+            <%-- Modal chỉnh sửa hồ sơ --%>
+            <c:if test="${profileUser.id == me.id}">
+                <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Chỉnh sửa trang cá nhân</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/profile/edit" method="post" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Họ tên</label>
+                                        <input type="text" name="fullName" class="form-control" value="${profileUser.fullName}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Giới thiệu bản thân</label>
+                                        <textarea name="bio" class="form-control" rows="3" placeholder="Viết vài dòng giới thiệu...">${profileUser.bio}</textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Ảnh đại diện</label>
+                                            <input type="file" name="avatar" accept="image/*" class="form-control">
+                                            <div class="small text-muted mt-1">Tối đa 5MB, định dạng JPG, PNG.</div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Ảnh bìa</label>
+                                            <input type="file" name="cover" accept="image/*" class="form-control">
+                                            <div class="small text-muted mt-1">Tối đa 5MB, định dạng JPG, PNG.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+
+            <%-- Modal người theo dõi --%>
+            <div class="modal fade" id="followersModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Người theo dõi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <c:if test="${empty followersList}">
+                                <p class="text-muted mb-0">Chưa có ai theo dõi.</p>
+                            </c:if>
+                            <c:forEach items="${followersList}" var="u">
+                                <a href="${pageContext.request.contextPath}/profile?id=${u.id}" class="fb-follow-item">
+                                    <img src="${not empty u.avatarUrl ? u.avatarUrl : 'https://ui-avatars.com/api/?name='}${empty u.avatarUrl ? u.username : ''}" alt="">
+                                    <div>
+                                        <div class="fw-semibold">${not empty u.fullName ? u.fullName : u.username}</div>
+                                        <div class="text-muted small">@${u.username}</div>
+                                    </div>
+                                </a>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%-- Modal đang theo dõi --%>
+            <div class="modal fade" id="followingModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Đang theo dõi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <c:if test="${empty followingList}">
+                                <p class="text-muted mb-0">Chưa theo dõi ai.</p>
+                            </c:if>
+                            <c:forEach items="${followingList}" var="u">
+                                <a href="${pageContext.request.contextPath}/profile?id=${u.id}" class="fb-follow-item">
+                                    <img src="${not empty u.avatarUrl ? u.avatarUrl : 'https://ui-avatars.com/api/?name='}${empty u.avatarUrl ? u.username : ''}" alt="">
+                                    <div>
+                                        <div class="fw-semibold">${not empty u.fullName ? u.fullName : u.username}</div>
+                                        <div class="text-muted small">@${u.username}</div>
+                                    </div>
+                                </a>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
         <aside class="fb-sidebar-right d-none d-xl-block"></aside>
     </div>

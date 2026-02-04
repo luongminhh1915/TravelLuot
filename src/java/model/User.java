@@ -10,6 +10,7 @@ public class User {
     private String passwordHash;
     private String fullName;
     private String avatarUrl;
+    private String coverUrl;
     private String bio;
     private Boolean isActive;
     private LocalDateTime createdAt;
@@ -18,7 +19,7 @@ public class User {
     public User() {}
 
     public User(int id, int roleId, String username, String email, String passwordHash,
-                String fullName, String avatarUrl, String bio, Boolean isActive,
+                String fullName, String avatarUrl, String coverUrl, String bio, Boolean isActive,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.roleId = roleId;
@@ -27,6 +28,7 @@ public class User {
         this.passwordHash = passwordHash;
         this.fullName = fullName;
         this.avatarUrl = avatarUrl;
+        this.coverUrl = coverUrl;
         this.bio = bio;
         this.isActive = isActive;
         this.createdAt = createdAt;
@@ -47,6 +49,8 @@ public class User {
     public void setFullName(String fullName) { this.fullName = fullName; }
     public String getAvatarUrl() { return avatarUrl; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+    public String getCoverUrl() { return coverUrl; }
+    public void setCoverUrl(String coverUrl) { this.coverUrl = coverUrl; }
     public String getBio() { return bio; }
     public void setBio(String bio) { this.bio = bio; }
     public Boolean getIsActive() { return isActive; }

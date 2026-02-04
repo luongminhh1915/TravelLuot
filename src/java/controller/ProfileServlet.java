@@ -44,6 +44,19 @@ public class ProfileServlet extends HttpServlet {
         boolean isFollowing = me.getId() != profileUserId && followDAO.isFollowing(me.getId(), profileUserId);
         int followers = followDAO.countFollowers(profileUserId);
         int following = followDAO.countFollowing(profileUserId);
+
+        List<Integer> followerIds = followDAO.getFollowerIds(profileUserId);
+        List<Integer> followingIds = followDAO.getFollowingIds(profileUserId);
+        List<User> followersList = new ArrayList<>();
+        List<User> followingList = new ArrayList<>();
+        for (Integer fid : followerIds) {
+            User u = userDAO.getById(fid);
+            if (u != null) followersList.add(u);
+        }
+        for (Integer fid : followingIds) {
+            User u = userDAO.getById(fid);
+            if (u != null) followingList.add(u);
+        }
         PostDAO postDAO = new PostDAO();
         int page = 1;
         String p = req.getParameter("page");
@@ -59,6 +72,8 @@ public class ProfileServlet extends HttpServlet {
         req.setAttribute("isFollowing", isFollowing);
         req.setAttribute("followers", followers);
         req.setAttribute("following", following);
+        req.setAttribute("followersList", followersList);
+        req.setAttribute("followingList", followingList);
         req.setAttribute("posts", posts);
         req.setAttribute("userDAO", userDAO);
         req.setAttribute("checkInDAO", new CheckInDAO());

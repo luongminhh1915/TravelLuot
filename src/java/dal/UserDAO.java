@@ -71,6 +71,29 @@ public class UserDAO extends DBConnect {
         return list;
     }
 
+    public boolean updateProfile(int id, String fullName, String bio, String avatarUrl, String coverUrl) {
+        User current = getById(id);
+        if (current == null) return false;
+        String newFullName = (fullName != null && !fullName.isBlank()) ? fullName.trim() : current.getFullName();
+        String newBio = bio != null ? bio.trim() : current.getBio();
+        String newAvatar = avatarUrl != null ? avatarUrl : current.getAvatarUrl();
+        String newCover = coverUrl != null ? coverUrl : current.getCoverUrl();
+
+        String sql = "UPDATE users SET full_name = ?, bio = ?, avatar_url = ?, cover_url = ?, updated_at = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newFullName);
+            ps.setString(2, newBio);
+            ps.setString(3, newAvatar);
+            ps.setString(4, newCover);
+            ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(6, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private User map(ResultSet rs) throws SQLException {
         User u = new User();
         u.setId(rs.getInt("id"));
@@ -80,6 +103,11 @@ public class UserDAO extends DBConnect {
         u.setPasswordHash(rs.getString("password_hash"));
         u.setFullName(rs.getString("full_name"));
         u.setAvatarUrl(rs.getString("avatar_url"));
+        try {
+            u.setCoverUrl(rs.getString("cover_url"));
+        } catch (SQLException ignored) {
+            // Older databases may not have cover_url yet
+        }
         u.setBio(rs.getString("bio"));
         u.setIsActive(rs.getBoolean("is_active"));
         Timestamp t = rs.getTimestamp("created_at");

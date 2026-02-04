@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/swp/Test/luot/web/index.html</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/CheckIn.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/Comment.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/CommentLike.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/Follow.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/Location.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/PostPhoto.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/model/Role.java</file>
+            <file>file:/D:/swp/Test/luot/src/java/dal/DBConnect.java</file>
+        </group>
+    </open-files>
+</project-private>
